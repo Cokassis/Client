@@ -22,6 +22,7 @@ class DishPhoto(models.Model):
 class Material(models.Model):
     name = models.CharField(max_length=30)
     breed = models.CharField(max_length=30)
+    alias = models.CharField(max_length=30)
 
 
 class WeightInterval(models.Model):
