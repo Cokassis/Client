@@ -12,7 +12,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=30, null=True)
     phone = models.IntegerField(null=True)
     birthday = models.DateField(null=True)
-    profile = models.ImageField(upload_to='/srv/cokassis/Client/image')
+    profile = models.ImageField(upload_to='~/cokassis/Client/image')
 
 
 class HistoryKeyword(models.Model):

@@ -16,7 +16,7 @@ class DishMat(models.Model):
 
 
 class DishPhoto(models.Model):
-    photo = models.ImageField(upload_to='/srv/cokassis/image')
+    photo = models.ImageField(upload_to='~/cokassis/image')
 
 
 class Material(models.Model):
