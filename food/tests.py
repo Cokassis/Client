@@ -33,4 +33,6 @@ class DishMaterialTestCase(TestCase):
     def test_search_fanqie_return_corsp_dish_material(self):
         c = Client()
         resp = c.post('/search/', {'searchStr': '番茄'})
-        resp_content = resp.content
+        resp_json = resp.json()
+        dishes = resp_json['dishes']
+        self.assertEqual(dishes[0].name, '番茄炒蛋')
