@@ -35,4 +35,4 @@ class DishMaterialTestCase(TestCase):
         resp = c.post('/search/', {'searchStr': '番茄'})
         resp_json = resp.json()
         dishes = resp_json['dishes']
-        self.assertEqual(dishes[0].name, '番茄炒蛋')
+        self.assertEqual(dishes[0]['name'], '番茄炒蛋')
