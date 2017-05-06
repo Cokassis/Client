@@ -42,22 +42,40 @@ class DishMaterialTestCase(TestCase):
         resp_json = resp.json()
         dishes = resp_json['dishes']
         self.assertEqual(len(dishes), 3)
+        self.assertIn('id', dishes[0])
         self.assertEqual(dishes[0]['name'], '番茄炒蛋')
         self.assertEqual(dishes[0]['estPrice'], 6.5)
         self.assertEqual(dishes[0]['discount'], 1.5)
         self.assertEqual(dishes[0]['like'], 5)
+        self.assertIn('id', dishes[1])
         self.assertEqual(dishes[1]['name'], '番茄土豆片')
         self.assertEqual(dishes[1]['estPrice'], 9)
         self.assertEqual(dishes[1]['discount'], 2.5)
         self.assertEqual(dishes[1]['like'], 3)
+        self.assertIn('id', dishes[2])
         self.assertEqual(dishes[2]['name'], '(外婆真传)番茄打卤面')
         self.assertEqual(dishes[2]['estPrice'], 9)
         self.assertEqual(dishes[2]['discount'], 2.5)
         self.assertEqual(dishes[2]['like'], 3)
         materials = resp_json['materials']
         self.assertEqual(len(materials), 2)
+        self.assertIn('id', materials[0])
         self.assertEqual(materials[0]['name'], '番茄')
         self.assertEqual(materials[0]['breed'], '大红番茄')
+        self.assertIn('id', materials[1])
         self.assertEqual(materials[1]['name'], '番茄')
         self.assertEqual(materials[1]['breed'], '粉红番茄')
+
+
+    def test_return_the_right_dish_detail_giving_dishid(self):
+        adish = Dish.objects.get(name__exact= '番茄炒蛋')
+        c = Client()
+        resp = c.get('/getdishdetail/', {'id': adish.id})
+        exp_json = {
+            'name': '番茄炒蛋',
+            'estPrice': 6.5,
+            'discount': 1.5,
+            'like': 5
+        }
+        self.assertJSONEqual(str(resp.content, encoding= 'utf8'), exp_json)
 

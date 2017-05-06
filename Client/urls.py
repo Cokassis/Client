@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from food.views import search
+from food.views import search, getDishDetail
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^search/$', search),
+    url(r'^getdishdetail/', getDishDetail),
 ]

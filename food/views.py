@@ -11,23 +11,37 @@ def search(request):
         dishes = Dish.objects.filter(name__contains= search_str)
         materials = Material.objects.filter(name__contains= search_str)
         dishes_list = []
-        for dish in dishes:
+        for adish in dishes:
             dish_dict = {
-                'name': dish.name,
-                'estPrice': dish.estPrice,
-                'discount': dish.discount,
-                'like': dish.like
+                'id': adish.id,
+                'name': adish.name,
+                'estPrice': adish.estPrice,
+                'discount': adish.discount,
+                'like': adish.like
             }
             dishes_list.append(dish_dict)
         material_list = []
-        for material in materials:
+        for amaterial in materials:
             material_dict = {
-                'name': material.name,
-                'breed': material.breed
+                'id': amaterial.id,
+                'name': amaterial.name,
+                'breed': amaterial.breed
             }
             material_list.append(material_dict)
         result = {
             'dishes': dishes_list,
             'materials': material_list
+        }
+        return JsonResponse(result)
+
+
+def getDishDetail(request):
+    if request.method == 'GET':
+        adish = Dish.objects.get(id__exact= request.GET['id'])
+        result = {
+            'name': adish.name,
+            'estPrice': adish.estPrice,
+            'discount': adish.discount,
+            'like': adish.like
         }
         return JsonResponse(result)
