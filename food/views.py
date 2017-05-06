@@ -1,9 +1,33 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from food.models import Dish, Material
 
 # Create your views here.
 
 
 def search(request):
-    result = {'dishes': [{'name': '番茄炒蛋'}, {'name': '番茄土豆片'}, {'name': '红烧牛肉'}, {'name': '酸辣土豆丝'}, {'name': '糖醋排骨'}],'materials': [{'name': '番茄', 'breed': '大红番茄'}, {'name': '番茄', 'breed': '粉红番茄'}]}
-    return JsonResponse(result)
+    if request.method == 'GET':
+        search_str = request.GET['search_str']
+        dishes = Dish.objects.filter(name__contains= search_str)
+        materials = Material.objects.filter(name__contains= search_str)
+        dishes_list = []
+        for dish in dishes:
+            dish_dict = {
+                'name': dish.name,
+                'estPrice': dish.estPrice,
+                'discount': dish.discount,
+                'like': dish.like
+            }
+            dishes_list.append(dish_dict)
+        material_list = []
+        for material in materials:
+            material_dict = {
+                'name': material.name,
+                'breed': material.breed
+            }
+            material_list.append(material_dict)
+        result = {
+            'dishes': dishes_list,
+            'materials': material_list
+        }
+        return JsonResponse(result)
