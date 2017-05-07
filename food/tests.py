@@ -71,11 +71,25 @@ class DishMaterialTestCase(TestCase):
         adish = Dish.objects.get(name__exact= '番茄炒蛋')
         c = Client()
         resp = c.get('/getdishdetail/', {'id': adish.id})
+        resp_json = resp.json()
+        self.assertIn('id', resp_json)
+        resp_json['id'] = 1
+        self.assertIn('materials', resp_json)
+        self.assertEqual(len(resp_json['materials']), 2)
+        self.assertIn('id', resp_json['materials'][0])
+        resp_json['materials'][0]['id'] = 1
+        self.assertIn('id', resp_json['materials'][1])
+        resp_json['materials'][1]['id'] = 1
         exp_json = {
+            'id': 1,
             'name': '番茄炒蛋',
             'estPrice': 6.5,
             'discount': 1.5,
-            'like': 5
+            'like': 5,
+            'materials': [
+                {'id': 1, 'name': '番茄', 'breed': '大红番茄', 'weight': '约0.7kg', 'amount': '2个', 'size': '小', 'supplier': '连贵-蔬菜档'},
+                {'id': 1, 'name': '鸡蛋', 'breed': '农家蛋', 'weight': '约1.2kg', 'amount': '4个', 'size': '', 'supplier': '品泰贸易有限公司'}
+            ]
         }
         self.assertJSONEqual(str(resp.content, encoding= 'utf8'), exp_json)
 

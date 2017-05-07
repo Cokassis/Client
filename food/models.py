@@ -11,8 +11,10 @@ class Dish(models.Model):
 
 
 class DishMat(models.Model):
-    Qtity = models.IntegerField()
-    Unit = models.CharField(max_length=30)
+    quantity = models.IntegerField()
+    material = models.ForeignKey('Material')
+    dish = models.ForeignKey('Dish')
+    weightinterval = models.OneToOneField('WeightInterval')
 
 
 class DishPhoto(models.Model):
@@ -23,8 +25,15 @@ class Material(models.Model):
     name = models.CharField(max_length=30)
     breed = models.CharField(max_length=30)
     alias = models.CharField(max_length=30)
+    dish = models.ManyToManyField(
+        'Dish',
+        through='DishMat',
+        through_fields=('material', 'dish'),
+    )
 
 
 class WeightInterval(models.Model):
-    interval = models.FloatField()
-    note = models.CharField(max_length=30)
+    intervalMaxWeight = models.FloatField()
+    intervalMinWeight = models.FloatField()
+    intervalNote = models.CharField(max_length=30)
+    unit = models.CharField(max_length=30)

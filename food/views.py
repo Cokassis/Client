@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from food.models import Dish, Material
+from food.models import Dish, Material, DishMat, WeightInterval
 
 # Create your views here.
 
@@ -37,11 +37,29 @@ def search(request):
 
 def getDishDetail(request):
     if request.method == 'GET':
-        adish = Dish.objects.get(id__exact= request.GET['id'])
+        aDish = Dish.objects.get(id__exact= request.GET['id'])
+        materials = aDish.material_set.all()
+        material_list = []
+        for aMaterial in materials:
+            aDishMat = DishMat.objects.get(dish__id= aDish.id, material__id= aMaterial.id)
+            aWeightInterval = WeightInterval.objects.get(dishmat= aDishMat)
+            material_dict = {
+                'id': aMaterial.id,
+                'name': aMaterial.name,
+                'breed': aMaterial.breed,
+                'weight': adishmat.quantity * (aWeightInterval.intervalMaxWeight + aWeightInterval.intervalMinWeight)/2,
+                'unit': aWeightInterval.unit,
+                'amount': adishmat.quantity,
+                'size': aWeightInterval.intervalNote,
+             #   'supplier':
+            }
+            material_list.append(material_dict)
         result = {
+            'id': adish.id,
             'name': adish.name,
             'estPrice': adish.estPrice,
             'discount': adish.discount,
-            'like': adish.like
+            'like': adish.like,
+            'materials': material_list
         }
         return JsonResponse(result)
