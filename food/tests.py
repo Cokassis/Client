@@ -1,41 +1,104 @@
 from django.test import TestCase, Client
-from food.models import Dish, Material
+from food.models import Dish, Material, DishMat, WeightInterval
+from supplier.models import Supplier, MatSellInfo
 
 # Create your tests here.
 
 
 class DishMaterialTestCase(TestCase):
     def setUp(self):
-        Dish.objects.create(estPrice= 6.5,
+        fanQieChaoDan = Dish.objects.create(estPrice= 6.5,
                              name= "番茄炒蛋",
                              discount= 1.5,
                              like= 5)
-        Dish.objects.create(estPrice= 9,
+        fanQieTuDouPian = Dish.objects.create(estPrice= 9,
                              name= "番茄土豆片",
                              discount= 2.5,
                              like= 3)
-        Dish.objects.create(estPrice= 9,
+        fanQieDaLuMian = Dish.objects.create(estPrice= 9,
                              name= "(外婆真传)番茄打卤面",
                              discount= 2.5,
                              like= 3)
-        Dish.objects.create(estPrice= 19,
+        hongShaoNiuRou = Dish.objects.create(estPrice= 19,
                              name= "红烧牛肉",
                              discount= 2.5,
                              like= 3)
-        Dish.objects.create(estPrice= 8,
+        suanLaTuDouSi = Dish.objects.create(estPrice= 8,
                              name= "酸辣土豆丝",
                              discount= 1.5,
                              like= 4)
-        Dish.objects.create(estPrice= 17,
+        tangCuPaiGu = Dish.objects.create(estPrice= 17,
                              name= "糖醋排骨",
                              discount= 2.5,
                              like= 5)
-        Material.objects.create(name= "番茄",
+        daHongFanQie = Material.objects.create(name= "番茄",
                                  breed= "大红番茄")
-        Material.objects.create(name= "番茄",
+        fenHongFanQie = Material.objects.create(name= "番茄",
                                  breed= "粉红番茄")
-        Material.objects.create(name= "番红茄",
+        fanHongQie = Material.objects.create(name= "番红茄",
                                  breed= "粉红番红茄")
+        jidan = Material.objects.create(
+            name="鸡蛋",
+            breed="农家蛋"
+        )
+        pin_tai = Supplier.objects.create(
+            name="品泰贸易有限公司"
+        )
+        lian_gui = Supplier.objects.create(
+            name="连贵-蔬菜档"
+        )
+        MatSellInfo.objects.create(
+            unitPrice=8,
+            inStock=True,
+            supplier=lian_gui,
+            material=jidan
+        )
+        MatSellInfo.objects.create(
+            unitPrice=3,
+            inStock=True,
+            supplier=pin_tai,
+            material=daHongFanQie
+        )
+        daHongFanQieWeiInt0 = WeightInterval.obejcts.create(
+            intervalMaxWeight=0.15,
+            intervalMinWeight=0.1,
+            material=daHongFanQie,
+            intervalNote="小",
+            unit="kg"
+        )
+        daHongFanQieWeiInt1 = WeightInterval.obejcts.create(
+            intervalMaxWeight=0.2,
+            intervalMinWeight=0.15,
+            material=daHongFanQie,
+            intervalNote="中",
+            unit="kg"
+        )
+        daHongFanQieWeiInt2 = WeightInterval.obejcts.create(
+            intervalMaxWeight=0.25,
+            intervalMinWeight=0.2,
+            material=daHongFanQie,
+            intervalNote="大",
+            unit="kg"
+        )
+        jiDanWeiInt = WeightInterval.obejcts.create(
+            intervalMaxWeight=0.1,
+            intervalMinWeight=0.05,
+            material=jidan,
+            intervalNote="",
+            unit="kg"
+        )
+        DishMat.objects.create(
+            dish=fanQieChaoDan,
+            material=daHongFanQie,
+            quantity=2,
+            weightinterval=daHongFanQieWeiInt1
+        )
+        DishMat.objects.create(
+            dish=fanQieChaoDan,
+            material=jidan,
+            quantity=4,
+            weightinterval=jiDanWeiInt
+        )
     def test_search_fanqie_return_corsp_dish_material(self):
         c = Client()
         resp = c.get('/search/', {'search_str': '番茄'})

@@ -14,11 +14,12 @@ class DishMat(models.Model):
     quantity = models.IntegerField()
     material = models.ForeignKey('Material')
     dish = models.ForeignKey('Dish')
-    weightinterval = models.OneToOneField('WeightInterval')
+    weightInterval = models.OneToOneField('WeightInterval')
 
 
 class DishPhoto(models.Model):
     photo = models.ImageField(upload_to='~/cokassis/image')
+    dish = models.ForeignKey('Dish')
 
 
 class Material(models.Model):
@@ -37,3 +38,4 @@ class WeightInterval(models.Model):
     intervalMinWeight = models.FloatField()
     intervalNote = models.CharField(max_length=30)
     unit = models.CharField(max_length=30)
+    material = models.ForeignKey('Material')
