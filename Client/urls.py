@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from food.views import search, getDishDetail
+from food.views import search, get_dish_detail
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^search/$', search),
-    url(r'^getdishdetail/', getDishDetail),
+    url(r'^get_dish_detail/', get_dish_detail),
 ]

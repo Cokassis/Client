@@ -15,6 +15,7 @@ class DishMat(models.Model):
     material = models.ForeignKey('Material')
     dish = models.ForeignKey('Dish')
     weightInterval = models.OneToOneField('WeightInterval')
+    supplier = models.OneToOneField('supplier.Supplier')
 
 
 class DishPhoto(models.Model):
