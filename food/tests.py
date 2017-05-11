@@ -7,6 +7,7 @@ from supplier.models import Supplier, MatSellInfo
 
 class DishMaterialTestCase(TestCase):
     def setUp(self):
+        self.maxDiff = None
         fan_qie_chao_dan = Dish.objects.create(
             estPrice=6.5,
             name="番茄炒蛋",
@@ -82,28 +83,28 @@ class DishMaterialTestCase(TestCase):
             intervalMinWeight=0.1,
             material=da_hong_fan_qie,
             intervalNote="小",
-            unit="kg"
+            unit="个"
         )
         da_hong_fan_qie_wei_int1 = WeightInterval.objects.create(
             intervalMaxWeight=0.2,
             intervalMinWeight=0.15,
             material=da_hong_fan_qie,
             intervalNote="中",
-            unit="kg"
+            unit="个"
         )
         da_hong_fan_qie_wei_int2 = WeightInterval.objects.create(
             intervalMaxWeight=0.25,
             intervalMinWeight=0.2,
             material=da_hong_fan_qie,
             intervalNote="大",
-            unit="kg"
+            unit="个"
         )
         ji_dan_wei_int = WeightInterval.objects.create(
             intervalMaxWeight=0.1,
             intervalMinWeight=0.05,
             material=ji_dan,
             intervalNote="",
-            unit="kg"
+            unit="个"
         )
         DishMat.objects.create(
             dish=fan_qie_chao_dan,
@@ -155,42 +156,36 @@ class DishMaterialTestCase(TestCase):
         c = Client()
         resp = c.get('/get_dish_detail/', {'id': a_dish.id})
         resp_json = resp.json()
-        self.assertIn('id', resp_json)
-        resp_json['id'] = 1
         self.assertIn('materials', resp_json)
         self.assertEqual(len(resp_json['materials']), 2)
-        self.assertIn('id', resp_json['materials'][0])
-        resp_json['materials'][0]['id'] = 1
-        self.assertIn('id', resp_json['materials'][1])
-        resp_json['materials'][1]['id'] = 1
         exp_json = {
-            'id': 1,
+            'id': resp_json['id'],
             'name': '番茄炒蛋',
             'estPrice': 6.5,
             'discount': 1.5,
             'like': 5,
             'materials': [
                 {
-                    'id': 1,
+                    'id': resp_json['materials'][0]['id'],
                     'name': '番茄',
                     'breed': '大红番茄',
-                    'mean_weight': '0.35',
+                    'mean_weight': 0.35,
                     'unit': '个',
-                    'amount': '2',
-                    'size': '小',
+                    'amount': 2,
+                    'size': '中',
                     'supplier': '连贵-蔬菜档'
                 },
                 {
-                    'id': 1,
+                    'id': resp_json['materials'][1]['id'],
                     'name': '鸡蛋',
                     'breed': '农家蛋',
-                    'mean_weight': '0.3',
+                    'mean_weight': 0.3,
                     'unit': '个',
-                    'amount': '4',
+                    'amount': 4,
                     'size': '',
                     'supplier': '品泰贸易有限公司'
                 }
             ]
         }
-        self.assertJSONEqual(str(resp.content, encoding= 'utf8'), exp_json)
+        self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)
 

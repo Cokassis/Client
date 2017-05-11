@@ -48,10 +48,10 @@ def get_dish_detail(request):
                 'id': a_material.id,
                 'name': a_material.name,
                 'breed': a_material.breed,
-                'mean_weight': a_dish_mat.quantity * (
+                'mean_weight': round(a_dish_mat.quantity * (
                     a_weight_interval.intervalMaxWeight +
                     a_weight_interval.intervalMinWeight
-                )/2,
+                )/2, 2),
                 'unit': a_weight_interval.unit,
                 'amount': a_dish_mat.quantity,
                 'size': a_weight_interval.intervalNote,
