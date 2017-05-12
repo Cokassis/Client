@@ -4,9 +4,9 @@ from django.db import models
 
 
 class Customer(models.Model):
-    userType = models.IntegerField(default=1)
+    user_type = models.IntegerField(default=1)
     password = models.CharField(max_length=30)
-    userName = models.CharField(max_length=30)
+    user_name = models.CharField(max_length=30)
     nickname = models.CharField(max_length=30, null=True)
     address = models.CharField(max_length=30, null=True)
     name = models.CharField(max_length=30, null=True)
@@ -17,7 +17,7 @@ class Customer(models.Model):
 
 class HistoryKeyword(models.Model):
     keyword = models.CharField(max_length=30)
-    searchCount = models.IntegerField()
+    search_count = models.IntegerField()
     customer = models.ManyToManyField('Customer')
 
 
