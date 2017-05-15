@@ -18,7 +18,7 @@ class Customer(models.Model):
 class HistoryKeyword(models.Model):
     keyword = models.CharField(max_length=30)
     search_count = models.IntegerField()
-    customer = models.ManyToManyField('Customer')
+    customers = models.ManyToManyField('Customer')
 
 
 class Order(models.Model):

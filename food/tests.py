@@ -60,6 +60,22 @@ class DishMaterialTestCase(TestCase):
             name="鸡蛋",
             breed="农家蛋"
         )
+        ji_dan = Material.objects.create(
+            name="鸡蛋",
+            breed="农家蛋"
+        )
+        sha_jiang = Material.objects.create(
+            name="姜",
+            breed="沙姜"
+        )
+        lao_jiang = Material.objects.create(
+            name="姜",
+            breed="老姜"
+        )
+        zi_jiang = Material.objects.create(
+            name="姜",
+            breed="子姜"
+        )
         pin_tai = Supplier.objects.create(
             name="品泰贸易有限公司"
         )
@@ -70,45 +86,69 @@ class DishMaterialTestCase(TestCase):
             unitPrice=8,
             inStock=True,
             supplier=lian_gui,
-            material=ji_dan
+            material=ji_dan,
+            unit="元/kg"
         )
         MatSellInfo.objects.create(
             unitPrice=3,
             inStock=True,
             supplier=pin_tai,
-            material=da_hong_fan_qie
+            material=da_hong_fan_qie,
+            unit="元/kg"
+        )
+        MatSellInfo.objects.create(
+            unitPrice=20,
+            inStock=True,
+            supplier=lian_gui,
+            material=sha_jiang,
+            unit="元/kg"
+        )
+        MatSellInfo.objects.create(
+            unitPrice=25,
+            inStock=True,
+            supplier=pin_tai,
+            material=zi_jiang,
+            unit="元/kg"
+        )
+        MatSellInfo.objects.create(
+            unitPrice=16,
+            inStock=True,
+            supplier=lian_gui,
+            material=lao_jiang,
+            unit="元/kg"
         )
         da_hong_fan_qie_wei_int0 = WeightInterval.objects.create(
             intervalMaxWeight=0.15,
             intervalMinWeight=0.1,
             material=da_hong_fan_qie,
             intervalNote="小",
-            unit="个"
+            unit="kg/个"
         )
         da_hong_fan_qie_wei_int1 = WeightInterval.objects.create(
             intervalMaxWeight=0.2,
             intervalMinWeight=0.15,
             material=da_hong_fan_qie,
             intervalNote="中",
-            unit="个"
+            unit="kg/个"
         )
         da_hong_fan_qie_wei_int2 = WeightInterval.objects.create(
             intervalMaxWeight=0.25,
             intervalMinWeight=0.2,
             material=da_hong_fan_qie,
             intervalNote="大",
-            unit="个"
+            unit="kg/个"
         )
         ji_dan_wei_int = WeightInterval.objects.create(
             intervalMaxWeight=0.1,
             intervalMinWeight=0.05,
             material=ji_dan,
             intervalNote="",
-            unit="个"
+            unit="kg/个"
         )
         DishMat.objects.create(
             dish=fan_qie_chao_dan,
             material=da_hong_fan_qie,
+            unit="个",
             quantity=2,
             weightInterval=da_hong_fan_qie_wei_int1,
             supplier=lian_gui
@@ -116,6 +156,7 @@ class DishMaterialTestCase(TestCase):
         DishMat.objects.create(
             dish=fan_qie_chao_dan,
             material=ji_dan,
+            unit="个",
             quantity=4,
             weightInterval=ji_dan_wei_int,
             supplier=pin_tai
@@ -189,3 +230,34 @@ class DishMaterialTestCase(TestCase):
         }
         self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)
 
+    def test_search_jiang_can_return_corresponding_material(self):
+        c = Client()
+        resp = c.get('/search_material/', {'search_str': '姜'})
+        resp_json = resp.json()
+        self.assertIn('id', resp_json)
+        self.assertEqual(len(resp_json['materials']), 3)
+        exp_json = {
+            'materials': [
+                {
+                    'id': resp_json['materials'][0]['id'],
+                    'name': '沙姜',
+                    'unit_price': '20',
+                    'unit': '元/kg',
+                    'supplier': '连贵-蔬菜档'
+                },
+                {
+                    'id': resp_json['materials'][1]['id'],
+                    'name': '子姜',
+                    'unit_price': '25',
+                    'unit': '元/kg',
+                    'supplier': '品泰贸易有限公司'
+                },
+                {
+                    'id': resp_json['materials'][2]['id'],
+                    'name': '老姜',
+                    'unit_price': '16',
+                    'unit': '元/kg',
+                    'supplier': '连贵-蔬菜档'
+                }
+            ]
+        }

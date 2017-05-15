@@ -176,13 +176,25 @@
  # return = {
  #     'materials': [
  #         {
- #             'name': '沙姜'
+ #             'id': *,
+ #             'name': '沙姜',
+ #             'unit_price': '',
+ #             'unit': '元/kg',
+ #             'supplier': ''
  #         },
  #         {
- #             'name': '子姜'
+ #             'id': *,
+ #             'name': '子姜',
+ #             'unit_price': '',
+ #             'unit': '元/kg',
+ #             'supplier': ''
  #         },
  #         {
- #             'name': '老姜'
+ #             'id': *,
+ #             'name': '老姜',
+ #             'unit_price': '',
+ #             'unit': '元/kg',
+ #             'supplier': ''
  #         }
  #     ]
  # }
