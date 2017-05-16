@@ -13,7 +13,7 @@ class Supplier(models.Model):
 
 
 class MatSellInfo(models.Model):
-    unitPrice = models.FloatField()
+    unit_price = models.FloatField()
     inStock = models.BooleanField()
     producing_area = models.CharField(max_length=30, null=True)
     unit = models.CharField(max_length=30)
