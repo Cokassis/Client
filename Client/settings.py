@@ -83,8 +83,12 @@ WSGI_APPLICATION = 'Client.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cok_client_back_end',
+        'PASSWORD': 'sysu2627',
+        'USER': 'root',
+        'HOST': '',
+        'PORT': 3306,
     }
 }
 
