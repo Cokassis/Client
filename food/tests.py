@@ -68,13 +68,13 @@ class DishMaterialTestCase(TestCase):
             name="姜",
             breed="沙姜"
         )
-        lao_jiang = Material.objects.create(
-            name="姜",
-            breed="老姜"
-        )
         zi_jiang = Material.objects.create(
             name="姜",
             breed="子姜"
+        )
+        lao_jiang = Material.objects.create(
+            name="姜",
+            breed="老姜"
         )
         pin_tai = Supplier.objects.create(
             name="品泰贸易有限公司"
@@ -211,7 +211,7 @@ class DishMaterialTestCase(TestCase):
                     'name': '番茄',
                     'breed': '大红番茄',
                     'mean_weight': 0.35,
-                    'unit': '个',
+                    'unit': 'kg/个',
                     'amount': 2,
                     'size': '中',
                     'supplier': '连贵-蔬菜档'
@@ -221,7 +221,7 @@ class DishMaterialTestCase(TestCase):
                     'name': '鸡蛋',
                     'breed': '农家蛋',
                     'mean_weight': 0.3,
-                    'unit': '个',
+                    'unit': 'kg/个',
                     'amount': 4,
                     'size': '',
                     'supplier': '品泰贸易有限公司'
@@ -233,31 +233,34 @@ class DishMaterialTestCase(TestCase):
     def test_search_jiang_can_return_corresponding_material(self):
         c = Client()
         resp = c.get('/search_material/', {'search_str': '姜'})
-        # resp_json = resp.json()
-        # self.assertIn('id', resp_json)
-        # self.assertEqual(len(resp_json['materials']), 3)
-        # exp_json = {
-        #     'materials': [
-        #         {
-        #             'id': resp_json['materials'][0]['id'],
-        #             'name': '沙姜',
-        #             'unit_price': '20',
-        #             'unit': '元/kg',
-        #             'supplier': '连贵-蔬菜档'
-        #         },
-        #         {
-        #             'id': resp_json['materials'][1]['id'],
-        #             'name': '子姜',
-        #             'unit_price': '25',
-        #             'unit': '元/kg',
-        #             'supplier': '品泰贸易有限公司'
-        #         },
-        #         {
-        #             'id': resp_json['materials'][2]['id'],
-        #             'name': '老姜',
-        #             'unit_price': '16',
-        #             'unit': '元/kg',
-        #             'supplier': '连贵-蔬菜档'
-        #         }
-        #     ]
-        # }
+        resp_json = resp.json()
+        self.assertEqual(len(resp_json['materials']), 3)
+        exp_json = {
+            'materials': [
+                {
+                    'id': resp_json['materials'][0]['id'],
+                    'name': '姜',
+                    'breed': '沙姜',
+                    'unit_price': 20.00,
+                    'unit': '元/kg',
+                    'supplier': '连贵-蔬菜档'
+                },
+                {
+                    'id': resp_json['materials'][1]['id'],
+                    'name': '姜',
+                    'breed': '子姜',
+                    'unit_price': 25.00,
+                    'unit': '元/kg',
+                    'supplier': '品泰贸易有限公司'
+                },
+                {
+                    'id': resp_json['materials'][2]['id'],
+                    'name': '姜',
+                    'breed': '老姜',
+                    'unit_price': 16.00,
+                    'unit': '元/kg',
+                    'supplier': '连贵-蔬菜档'
+                }
+            ]
+        }
+        self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)

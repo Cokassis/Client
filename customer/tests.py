@@ -51,7 +51,7 @@ class CustomerTestCase(TestCase):
 
     def test_return_five_top_search_dish(self):
         c = Client()
-        resp_json = c.get('/top_search_dish/').json()
+        resp = c.get('/top_search_dish/')
         exp_json = {
             'search_keywords': [
                 {
@@ -71,4 +71,4 @@ class CustomerTestCase(TestCase):
                 }
             ]
         }
-        self.assertJSONEqual(resp_json, exp_json)
+        self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)

@@ -72,7 +72,7 @@ def get_dish_detail(request):
 def search_material(request):
     if request.method == 'GET':
         search_str = request.GET['search_str']
-        materials = Material.objects.filter(name__contain=search_str)
+        materials = Material.objects.filter(name__contains=search_str)
         material_list = []
         for a_material in materials:
             suppliers = a_material.supplier_set.all()
@@ -84,7 +84,8 @@ def search_material(request):
                 material_dict = {
                     'id': a_material.id,
                     'name': a_material.name,
-                    'unit_price': a_mat_sell_info.unit_price,
+                    'breed': a_material.breed,
+                    'unit_price': round(a_mat_sell_info.unit_price, 2),
                     'unit': a_mat_sell_info.unit,
                     'supplier': a_supplier.name
                 }
@@ -92,4 +93,4 @@ def search_material(request):
         result = {
             'materials': material_list
         }
-    return JsonResponse(result)
+        return JsonResponse(result)
