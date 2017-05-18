@@ -198,6 +198,62 @@
  #         }
  #     ]
  # }
+ # 用户点击老姜, 发现弹出了一个对话框, 对话框提示"是否加入菜品?" 用户点击确定
+ # post: food.views.add_material_to_dish
+ # send = {
+ #     'material_id': id_of_lao_jiang,
+ #     'dish_id': id_of_fan_qie_chao_dan
+ # }
+ # return = {
+ #     'success': True,
+ #     'str': '番茄炒蛋 食材+1'
+ # }
+ # 用户点击SearchFoods上的返回按钮, 返回番茄炒蛋页面, 发现页面上多了一项食材, 食材的名字为"姜", 别名为"老姜", 设置食材的子页面自动弹出
+ # get: food.views.get_dish_detail  (函数同上)
+ # send = {
+ #     'dish_id': id_of_fan_qie_chao_dan
+ # }
+ # return = {
+ #     'id': resp_json['id'],
+ #     'name': '番茄炒蛋',
+ #     'estPrice': 6.5,
+ #     'discount': 1.5,
+ #     'like': 5,
+ #     'materials': [
+ #         {
+ #             'id': resp_json['materials'][0]['id'],
+ #             'name': '番茄',
+ #             'breed': '大红番茄',
+ #             'mean_weight': 0.35,
+ #             'unit': '个',
+ #             'amount': 2,
+ #             'size': '中',
+ #             'supplier': '连贵-蔬菜档'
+ #         },
+ #         {
+ #             'id': resp_json['materials'][1]['id'],
+ #             'name': '鸡蛋',
+ #             'breed': '农家蛋',
+ #             'mean_weight': 0.3,
+ #             'unit': '个',
+ #             'amount': 4,
+ #             'size': '',
+ #             'supplier': '品泰贸易有限公司'
+ #         },
+ #         {
+ #             'id': resp_json['materials'][2]['id'],
+ #             'name': '姜',
+ #             'breed': '老姜',
+ #             'mean_weight': 0.3,
+ #             'unit': '',
+ #             'amount': -1,
+ #             'size': '',
+ #             'supplier': '品泰贸易有限公司'
+ #         }
+ #     ]
+ # }
+ #
+ # get: food.views.get_dish_material_info_opts
  # <<<<<< 分支测试1.1111尾部
  # 用户发现页面上有一个加入购物车按钮
  # >>>>>>分支1.1112 用户点击加入购物车按钮

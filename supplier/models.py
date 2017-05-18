@@ -14,7 +14,7 @@ class Supplier(models.Model):
 
 class MatSellInfo(models.Model):
     unit_price = models.FloatField()
-    inStock = models.BooleanField()
+    in_stock = models.BooleanField()
     producing_area = models.CharField(max_length=30, null=True)
     unit = models.CharField(max_length=30)
     supplier = models.ForeignKey(Supplier)

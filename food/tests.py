@@ -84,35 +84,35 @@ class DishMaterialTestCase(TestCase):
         )
         MatSellInfo.objects.create(
             unit_price=8,
-            inStock=True,
+            in_stock=True,
             supplier=lian_gui,
             material=ji_dan,
             unit="元/kg"
         )
         MatSellInfo.objects.create(
             unit_price=3,
-            inStock=True,
+            in_stock=True,
             supplier=pin_tai,
             material=da_hong_fan_qie,
             unit="元/kg"
         )
         MatSellInfo.objects.create(
             unit_price=20,
-            inStock=True,
+            in_stock=True,
             supplier=lian_gui,
             material=sha_jiang,
             unit="元/kg"
         )
         MatSellInfo.objects.create(
             unit_price=25,
-            inStock=True,
+            in_stock=True,
             supplier=pin_tai,
             material=zi_jiang,
             unit="元/kg"
         )
         MatSellInfo.objects.create(
             unit_price=16,
-            inStock=True,
+            in_stock=True,
             supplier=lian_gui,
             material=lao_jiang,
             unit="元/kg"
@@ -191,6 +191,7 @@ class DishMaterialTestCase(TestCase):
         self.assertIn('id', materials[1])
         self.assertEqual(materials[1]['name'], '番茄')
         self.assertEqual(materials[1]['breed'], '粉红番茄')
+        self.fail('测试完成!')
 
     def test_return_the_right_dish_detail_giving_dishid(self):
         a_dish = Dish.objects.get(name__exact='番茄炒蛋')
@@ -229,6 +230,7 @@ class DishMaterialTestCase(TestCase):
             ]
         }
         self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)
+        self.fail('测试完成!')
 
     def test_search_jiang_can_return_corresponding_material(self):
         c = Client()
@@ -264,3 +266,4 @@ class DishMaterialTestCase(TestCase):
             ]
         }
         self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)
+        self.fail('测试完成!')
