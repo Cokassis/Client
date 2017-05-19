@@ -267,3 +267,76 @@ class DishMaterialTestCase(TestCase):
         }
         self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)
         self.fail('测试完成!')
+
+    def test_add_material_to_dish(self):
+        lao_jiang = Material.objects.get(breed='老姜')
+        fan_qie_chao_dan = Dish.objects.get(name='番茄炒蛋')
+        c = Client()
+        resp = c.post('/add_material_to_dish/', {
+            'material_id': lao_jiang.id,
+            'dish_id': fan_qie_chao_dan
+        })
+        resp_json = resp.json()
+        exp_json = {
+            'success': True,
+            'str': '番茄炒蛋 食材+1'
+        }
+        self.assertJSONEqual(resp_json, exp_json)
+        self.assertEqual(
+            len(Dish.objects.get(id=fan_qie_chao_dan.id).material_set.filter(id=lao_jiang.id)),
+            1
+        )
+        self.fail('测试完成!')
+
+    def test_get_dish_material_info_opts(self):
+        c = Client()
+        resp = c.get('/get_dish_material_info_opts/')
+
+    def  test_get_dish_detail_after_add_lao_jiang(self):
+        a_dish = Dish.objects.get(name__exact='番茄炒蛋')
+        c = Client()
+        resp = c.get('/get_dish_detail/', {'id': a_dish.id})
+        resp_json = resp.json()
+        self.assertIn('materials', resp_json)
+        self.assertEqual(len(resp_json['materials']), 2)
+        exp_json = {
+            'id': resp_json['id'],
+            'name': '番茄炒蛋',
+            'estPrice': 6.5,
+            'discount': 1.5,
+            'like': 5,
+            'materials': [
+                {
+                    'id': resp_json['materials'][0]['id'],
+                    'name': '番茄',
+                    'breed': '大红番茄',
+                    'mean_weight': 0.35,
+                    'unit': 'kg/个',
+                    'amount': 2,
+                    'size': '中',
+                    'supplier': '连贵-蔬菜档'
+                },
+                {
+                    'id': resp_json['materials'][1]['id'],
+                    'name': '鸡蛋',
+                    'breed': '农家蛋',
+                    'mean_weight': 0.3,
+                    'unit': 'kg/个',
+                    'amount': 4,
+                    'size': '',
+                    'supplier': '品泰贸易有限公司'
+                },
+                {
+                    'id': resp_json['materials'][2]['id'],
+                    'name': '姜',
+                    'breed': '老姜',
+                    'mean_weight': 0.3,
+                    'unit': '',
+                    'amount': -1,
+                    'size': '',
+                    'supplier': '品泰贸易有限公司'
+                }
+            ]
+        }
+        self.assertJSONEqual(str(resp.content, encoding='utf8'), exp_json)
+        self.fail('测试完成!')
