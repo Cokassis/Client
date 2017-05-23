@@ -259,7 +259,36 @@
 #
 # get: food.views.get_dish_material_info_opts
 # {
-#     ''
+#     'weight_intervals': [
+#         {
+#             'max_weight': 0.2,
+#             'min_weight': 0.1,
+#             'note': '少量',
+#             'unit': 'kg/个'
+#         },
+#         {
+#             'max_weight': 0.3,
+#             'min_weight': 0.2,
+#             'note': '中等',
+#             'unit': 'kg/个'
+#         },
+#         {
+#             'max_weight': 0.5,
+#             'min_weight': 0.3,
+#             'note': '较多',
+#             'unit': 'kg/个'
+#         }
+#     ]
+# }
+# 用户选择了中等量的姜, 并输入3份并确定
+# post: food.views.modify_dish_edit_material
+# send = {
+#     'dish_id': 'id_of_dish',
+#     'material_info': {
+#         'id': 'id_of_material',
+#         'weight_int_id': 'id_of_weight_interval',
+#         'quantity': 3
+#     }
 # }
 # <<<<<< 分支测试1.1111尾部
 # 用户发现页面上有一个加入购物车按钮
@@ -274,6 +303,32 @@
 #     'success': True,
 #     'str': '番茄炒蛋 +1'
 # }
+# 用户点击页面上的返回按钮, 一直返回到主页, 用户点击购物车
+# 用户发现购物车里有一项菜品: 番茄炒蛋
+# get: customer.views.get_shopping_cart
+# send = {
+#     'user_id': id_of_customer
+# }
+# return = {
+#     'est_price': 9,
+#     'deposit': 0,
+#     'discount': 0.8,
+#     'dishes': [
+#         {
+#             'name': '番茄炒蛋',
+#             'est_price': 9,
+#             'materials': ['大红番茄', '农家蛋', '老姜']
+#         }
+#     ]
+# }
+#
+# 用户点击预订按钮, 跳转至支付页面
+# get: customer.views.get_order_detail
+send = {
+    'user_id': 'id_of_customer',
+    'dishes': ['ids_of_dishes'],
+    'materials': ['ids_of_materials']
+}
 # <<<<<< 分支测试1.1112尾部
 # 用户发现页面上有一个立即购买按钮
 # >>>>>>分支1.1111 用户点击增加食材按钮
