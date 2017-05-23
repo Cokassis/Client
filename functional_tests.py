@@ -324,11 +324,11 @@
 #
 # 用户点击预订按钮, 跳转至支付页面
 # get: customer.views.get_order_detail
-send = {
-    'user_id': 'id_of_customer',
-    'dishes': ['ids_of_dishes'],
-    'materials': ['ids_of_materials']
-}
+# send = {
+#     'user_id': 'id_of_customer',
+#     'dishes': ['ids_of_dishes'],
+#     'materials': ['ids_of_materials']
+# }
 # <<<<<< 分支测试1.1112尾部
 # 用户发现页面上有一个立即购买按钮
 # >>>>>>分支1.1111 用户点击增加食材按钮
