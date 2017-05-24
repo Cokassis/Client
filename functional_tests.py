@@ -329,6 +329,40 @@
 #     'dishes': ['ids_of_dishes'],
 #     'materials': ['ids_of_materials']
 # }
+return = {
+    'customer': {
+        'name': '',
+        'address': '',
+        'phone': ''
+    },
+    'dishes': [
+        {
+            'name': '番茄炒蛋',
+            'est_price': 9.0,
+            'materials': [
+                {
+                    'name': '大红番茄',
+                    'count': 2,
+                    'unit': '个'
+                },
+                {
+                    'name': '鸡蛋',
+                    'count': 3,
+                    'unit': '个'
+                }
+            ]
+        }
+    ],
+    'materials': [
+        {
+            'name': '莲藕',
+            'est_price': 3.6,
+            'count': '2',
+            'unit': '节',
+            'weight': 2.5
+        }
+    ]
+}
 # <<<<<< 分支测试1.1112尾部
 # 用户发现页面上有一个立即购买按钮
 # >>>>>>分支1.1111 用户点击增加食材按钮
