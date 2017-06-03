@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from food.models import Dish, Material, DishMat, WeightInterval
+from food.models import Dish, Material, DishMat, WeightRange
 from supplier.models import Supplier, MatSellInfo
 
 # Create your views here.
